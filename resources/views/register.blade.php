@@ -5,7 +5,7 @@
             <h2 class="text-2xl font-semibold mb-4 text-gray-800">Register</h2>
 
             <!-- Login Form -->
-            <form method="POST" action="{{ route('user.submit') }}">
+            <form method="POST" action="{{ route('user.register') }}">
                 @csrf
 
                 <div class="mb-4">

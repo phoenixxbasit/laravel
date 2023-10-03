@@ -19,7 +19,8 @@ Route::get('/', [UserController::class, 'home'])->name('user.index');
 Route::get('/login', [UserController::class, 'login'])->name('user.loginDisplay');
 Route::get('/register', [UserController::class, 'registerDisplay'])->name('user.registerDisplay');
 Route::post('/login', [UserController::class, 'authenticate'])->name('user.login');
-Route::post('/register', [UserController::class, 'register'])->name('user.submit');
+Route::get('/logout', [UserController::class, 'logout'])->name('user.logout')->middleware('auth');
+Route::post('/register', [UserController::class, 'register'])->name('user.register');
 Route::resource('tasks', TaskController::class)->middleware('auth');
 
 // Route::group(['middleware' => ['auth:sanctum']], function () {

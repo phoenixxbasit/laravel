@@ -1,6 +1,11 @@
 <x-layout>
     <div class="bg-gray-100 min-h-screen p-6">
         <div class="max-w-6xl mx-auto">
+            @auth
+            <div class="text-right">
+                <a href="{{ route('user.logout') }}" class="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition duration-300 ease-in-out">LogOut</a>
+            </div>
+            @endauth
             <div class="mb-4 text-center">
                 <h2 class="text-2xl font-semibold mb-4 text-gray-800">Task Dashboard</h2>
                 <a href="{{ route('tasks.create') }}" class="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition duration-300 ease-in-out">Create New Task</a>
@@ -28,7 +33,7 @@
                     @endforeach
                 </ul>
                 <div class="mt-6 p-4">
-                    {{$tasks->links()}}
+                    {{-- {{$tasks->links()}} --}}
                 </div>
             @else
                 <p class="text-gray-600 text-center mt-4">No tasks available.</p>

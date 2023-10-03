@@ -27,6 +27,7 @@
 
 <body class="mb-48">
   <main>
+    <x-flash/>
     {{$slot}}
   </main>
 </body>

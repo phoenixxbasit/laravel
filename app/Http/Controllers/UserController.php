@@ -14,27 +14,16 @@ class UserController extends Controller
 
     public function login()
     {
-        return view('login');
+        if (auth()->check()) {
+            return redirect('/tasks')->with('message', 'Already Logged In');
+        } else {
+            return view('login');
+        }
     }
 
     public function registerDisplay()
     {
         return view('register');
-    }
-
-    public function authenticate(Request $request)
-    {
-        $formfields = $request->validate([
-            "email" => ["required", "email"],
-            "password" => 'required|confirmed|min:6',
-        ]);
-
-        return $formfields;
-
-        //    if( auth()->attempt($$formfields))
-        //    {
-        //     return redirect('/')->with('message', 'You are now logged in!');
-        //    };
     }
 
     public function register(Request $request)
@@ -50,6 +39,34 @@ class UserController extends Controller
         $newUser = User::create($formfields);
         auth()->login($newUser);
 
-        return redirect('/')->with('message', 'User created and logged in');
+        return redirect('/tasks')->with('message', 'User created and logged in');
+    }
+
+
+    public function authenticate(Request $request)
+    {
+        $formfields = $request->validate([
+            "email" => ["required", "email"],
+            "password" => 'required|confirmed|min:6',
+        ]);
+
+        if (auth()->attempt($formfields, $request["remember"])) {
+            $request->session()->regenerate();
+            return redirect('/tasks')->with('message', 'You are now logged in!');
+        };
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
+    }
+
+    public function logout(Request $request)
+    {
+        auth()->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerate();
+
+        return redirect('/')->with('message', 'You have been logout!');
     }
 }

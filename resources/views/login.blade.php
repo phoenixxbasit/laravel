@@ -1,4 +1,4 @@
-<x-layout>
+    <x-layout>
     <!-- Login Form -->
     <div class="bg-gray-100 min-h-screen flex justify-center items-center">
         <div class="bg-white p-6 rounded-lg shadow-lg w-full sm:w-96">

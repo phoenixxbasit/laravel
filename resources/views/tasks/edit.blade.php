@@ -15,12 +15,12 @@
                     <input
                         type="text"
                         id="title"
-                        name="title"
-                        class="w-full px-4 py-2 border rounded-lg @error('title') border-red-500 @enderror"
-                        value="{{ old('title', $task->Title) }}"
+                        name="Title"
+                        class="w-full px-4 py-2 border rounded-lg @error('Title') border-red-500 @enderror"
+                        value="{{ old('Title', $task->Title) }}"
                         required
                     />
-                    @error('title')
+                    @error('Title')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
@@ -29,26 +29,26 @@
                     <label for="description" class="block text-gray-700 text-sm font-semibold">Description</label>
                     <textarea
                         id="description"
-                        name="description"
+                        name="Description"
                         rows="4"
-                        class="w-full px-4 py-2 border rounded-lg @error('description') border-red-500 @enderror"
+                        class="w-full px-4 py-2 border rounded-lg @error('Description') border-red-500 @enderror"
                         required
-                    >{{ old('description', $task->Description) }}</textarea>
-                    @error('description')
+                    >{{ old('Description', $task->Description) }}</textarea>
+                    @error('Description')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-semibold">Completed</label>
+                    <label class="inline text-gray-700 text-sm font-semibold mr-2">Completed</label>
                     <input
                         type="checkbox"
                         id="completed"
-                        name="completed"
+                        name="Completed"
                         {{ $task->Completed ? 'checked' : '' }}
-                        class="border rounded-lg @error('completed') border-red-500 @enderror"
+                        class="border rounded-lg @error('Completed') border-red-500 @enderror"
                     />
-                    @error('completed')
+                    @error('Completed')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>

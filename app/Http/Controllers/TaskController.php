@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
-use App\Models\User;
 
 class TaskController extends Controller
 {
@@ -14,8 +13,9 @@ class TaskController extends Controller
      */
     public function index()
     {
+        // dd(Task::where('user_id',auth()->id())->get());
         return view("tasks/index", [
-            'tasks' => Task::latest()->paginate(4)
+            'tasks' => Task::where('user_id',auth()->id())->get()
         ]);
     }
 
@@ -33,15 +33,15 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request)
     {
         $formfields = $request->validate([
-            "Title" => ["required","min:6"],
+            "Title" => ["required", "min:6"],
             "Description" => 'required|min:6',
         ]);
 
         $formfields["Completed"] = 0;
-        $formfields["user_id"] = 2;
-        
+        $formfields["user_id"] = auth()->id();
+
         $Task = Task::create($formfields);
-        return redirect('/')->with('message', 'Tasks created successfully!');
+        return redirect('/tasks')->with('message', 'Tasks created successfully!');
     }
 
     /**
@@ -49,7 +49,10 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        return Task::find($task);
+ 
+        return view('tasks/view', [
+            'task' => $task
+        ]);
     }
 
     /**
@@ -65,7 +68,22 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        //
+
+        if ($task->user_id !== auth()->id()) {
+            abort(403, "Unauthorized Action");
+        }
+
+        $formfields = $request->validate([
+            "Title" => ["required", "min:6"],
+            "Description" => 'required|min:6',
+        ]);
+
+        $formfields["Completed"] = $request->Completed == "on" ? 1 : 0;
+        $formfields["user_id"] = auth()->id();
+
+        $task->update($formfields);
+
+        return redirect('/tasks')->with('message', 'Tasks created successfully!');
     }
 
     /**
@@ -73,6 +91,13 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        if ($task->user_id !== auth()->id()) {
+            abort(403, "Unauthorized Action");
+        }
+ 
+        $task->delete();
+
+        return redirect('/tasks')->with('message', 'Tasks deleted successfully!');
+
     }
 }
